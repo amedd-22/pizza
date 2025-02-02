@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Proposal</title>
+    <style>
+        body {
+            background-color: rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        .red-box {
+            background-color: red;
+            color: white;
+            width: 40%;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            position: absolute;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease-in-out;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 25px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+        .no-btn {
+            background-color: white;
+            color: black;
+        }
+        .no-btn:hover {
+            background-color: #d4b1b1;
+        }
+        .yes-btn {
+            background-color: green;
+            color: white;
+        }
+        .yes-btn:hover {
+            background-color: #28a745;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        .fade-out {
+            opacity: 1;
+            animation: fadeOut 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.9); }
+        }
+    </style>
+</head>
+<body>
+    <div class="red-box fade-in" id="proposal-box">
+        <p>Order a pizza for Ahmed tonight??</p>
+        <div class="buttons">
+            <button class="no-btn" onclick="addGreenButton()">No</button>
+            <button class="yes-btn" onclick="acceptProposal()">YES</button>
+        </div>
+    </div>
+    
+    <script>
+        function addGreenButton() {
+            let btn = document.createElement("button");
+            btn.innerText = "YES";
+            btn.className = "yes-btn fade-in";
+            btn.style.position = "absolute";
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+            btn.onclick = acceptProposal;
+            document.body.appendChild(btn);
+        }
+
+        function acceptProposal() {
+            let box = document.getElementById("proposal-box");
+            box.classList.add("fade-out");
+            let yesButtons = document.querySelectorAll(".yes-btn");
+            yesButtons.forEach(button => button.classList.add("fade-out"));
+            setTimeout(() => {
+                yesButtons.forEach(button => button.remove());
+                box.innerHTML = '<p>Yay! Congratulations. Ahmed knows you have pressed yes. thers is NO backing out now.</p>';
+                box.classList.remove("fade-out");
+                box.classList.add("fade-in");
+                confettiExplosion();
+            }, 500);
+        }
+
+        function confettiExplosion() {
+            let confettiScript = document.createElement("script");
+            confettiScript.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js";
+            confettiScript.onload = () => {
+                setInterval(() => {
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                }, 600);
+            };
+            document.body.appendChild(confettiScript);
+        }
+    </script>
+</body>
+</html>
